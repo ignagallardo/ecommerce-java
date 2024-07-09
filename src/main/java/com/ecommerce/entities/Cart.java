@@ -3,6 +3,9 @@ package com.ecommerce.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity @Table(name = "carts")
 @NoArgsConstructor @ToString @EqualsAndHashCode
 public class Cart {
@@ -21,4 +24,6 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @Getter @Setter private Product product_id;
+
+
 }
