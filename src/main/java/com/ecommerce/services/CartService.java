@@ -1,16 +1,11 @@
 package com.ecommerce.services;
 
-import com.adoptme.petshop.entities.Pet;
-import com.adoptme.petshop.entities.User;
-import com.adoptme.petshop.repositories.PetsRepository;
-import com.adoptme.petshop.repositories.UsersRepository;
 import com.ecommerce.entities.Cart;
 import com.ecommerce.entities.Client;
 import com.ecommerce.entities.Product;
 import com.ecommerce.repositories.CartRepository;
 import com.ecommerce.repositories.ClientRepository;
 import com.ecommerce.repositories.ProductRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +58,7 @@ public class CartService {
         return cart;
     }
 
-    public Optional<Cart> deleteProduct(Integer cartId, Integer clientId, Integer productId, Integer num) {
+    public Optional<Cart> deleteOne(Integer cartId, Integer clientId, Integer productId, Integer num) {
         Optional<Cart> cart = repository.findById(cartId);
         Optional<Client> client = clientRepository.findById(clientId);
         Optional<Product> product = productRepository.findById(productId);
@@ -74,22 +69,20 @@ public class CartService {
         Cart foundCart = cart.get();
         Client foundClient = client.get();
         Product foundProduct = product.get();
-
         // me aseguro de que el carrito pertenece al cliente correcto
         if (!foundCart.getClient_id().equals(foundClient)) {
-            return cart
+            return cart;
         }
-
-        // Asegúrate de que el producto está en el carrito y la cantidad es suficiente
+        // me aseguro de que el producto está en el carrito
         if (!foundCart.getProduct_id().equals(foundProduct)) {
-            return cart
+            return cart;
         }
         for (int i=1; i<=num; i++) {
-            // Reduce la cantidad del producto o elimínalo del carrito si la cantidad es 0
-            
+            if(product.isPresent()){
+                productRepository.deleteById(productId);
+            }
         }
-
-        // Guarda el carrito actualizado
+        // guardo el carrito actualizado
         repository.save(foundCart);
 
         return cart;
