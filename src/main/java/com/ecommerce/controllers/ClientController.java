@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/invoices")
+@RequestMapping("api/v1/clients")
 public class ClientController {
 
     @Autowired private ClientService service;

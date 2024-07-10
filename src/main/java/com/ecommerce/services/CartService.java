@@ -15,9 +15,12 @@ import java.util.Optional;
 @Service
 public class CartService {
 
-    @Autowired private CartRepository repository;
-    @Autowired private ClientRepository clientRepository;
-    @Autowired private ProductRepository productRepository;
+    @Autowired
+    private CartRepository repository;
+    @Autowired
+    private ClientRepository clientRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public Cart save(Cart cart) {
         return repository.save(cart);
@@ -51,7 +54,7 @@ public class CartService {
         Product foundProduct = product.get();
         foundCart.setClient_id(foundClient);
         repository.save(foundCart);
-        for (int i=1; i<=num; i++) {
+        for (int i = 1; i <= num; i++) {
             foundCart.setProduct_id(foundProduct);
             repository.save(foundCart);
         }
@@ -77,8 +80,8 @@ public class CartService {
         if (!foundCart.getProduct_id().equals(foundProduct)) {
             return cart;
         }
-        for (int i=1; i<=num; i++) {
-            if(product.isPresent()){
+        for (int i = 1; i <= num; i++) {
+            if (product.isPresent()) {
                 productRepository.deleteById(productId);
             }
         }
@@ -87,3 +90,4 @@ public class CartService {
 
         return cart;
     }
+}
