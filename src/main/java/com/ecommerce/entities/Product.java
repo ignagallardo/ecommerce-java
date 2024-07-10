@@ -7,7 +7,7 @@ import java.util.List;
 
 
 @Entity @Table (name = "products")
-@NoArgsConstructor @ToString @EqualsAndHashCode
+@NoArgsConstructor @AllArgsConstructor @ToString @EqualsAndHashCode
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +20,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product_id", cascade = CascadeType.ALL, orphanRemoval = true)
     @Getter @Setter private List<Cart> carts;
+
 }
