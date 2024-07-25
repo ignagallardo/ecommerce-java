@@ -12,15 +12,15 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter private Long id;
+    @Getter @Setter private Integer id;
 
     @Getter @Setter private Double price;
     @Getter @Setter private Integer amount;
     @Getter @Setter private boolean delivered;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    @Getter @Setter private Client client_id;
+    @JoinColumn(name = "client", nullable = false)
+    @Getter @Setter private Client client;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

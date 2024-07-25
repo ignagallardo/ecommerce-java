@@ -14,9 +14,9 @@ public class Client {
 
     @Getter @Setter private String name;
     @Getter @Setter private String surname;
-    @Getter @Setter private Integer docnumber;
+    @Getter @Setter private Integer docNumber;
 
-    @OneToMany(mappedBy = "client_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @Getter @Setter private List<Cart> carts;
 
     @OneToMany(mappedBy = "client_id", cascade = CascadeType.ALL, orphanRemoval = true)

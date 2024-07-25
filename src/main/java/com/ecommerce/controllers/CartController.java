@@ -5,10 +5,7 @@ import com.ecommerce.services.CartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +21,15 @@ public class CartController {
     @Autowired private CartService service;
 
 
-    @PostMapping("/{clientId}/{productId}/{num}/")
+    @PostMapping("/{client_id}/{productId}/{num}/")
     @Operation(summary = "Add product to cart", description = "Adds a product with a specified amount to the client's cart")
     @ApiResponse(responseCode = "200", description = "Product added to cart successfully")
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Client or Product not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<Cart> addProducts(@PathVariable Integer clientId, @PathVariable Integer productId, @PathVariable Integer num ) {
+    public ResponseEntity<Cart> addProducts(@PathVariable Integer client_id, @PathVariable Integer productId, @PathVariable Integer num ) {
         try {
-            Cart cart = service.addProduct(clientId, productId, num);
+            Cart cart = service.addProduct(client_id, productId, num);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (RuntimeException e){
             // System.out.println(e);
@@ -62,15 +59,15 @@ public class CartController {
         }
     }
 
-    @GetMapping("/{clientId}/")
+    @GetMapping("/{client_id}/")
     @Operation(summary = "Finds cart by ID and delivered status", description = "Returns a list of carts for a given client ID with ")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of carts")
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Carts not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<List<Cart>> findByClientIdAndDelivered(@PathVariable Integer clientId){
+    public ResponseEntity<List<Cart>> findByClientIdAndDelivered(@PathVariable Integer client_id){
         try {
-            List<Cart> carts = service.findByClientIdAndDelivered(clientId);
+            List<Cart> carts = service.findByClientIdAndDelivered(client_id);
             return ResponseEntity.ok(carts);
         } catch (RuntimeException e){
             System.out.println(e);

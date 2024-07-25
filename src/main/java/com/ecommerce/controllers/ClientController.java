@@ -4,6 +4,7 @@ import com.ecommerce.entities.Client;
 import com.ecommerce.services.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/clients")
+@Tag(name = "client routes", description = "CRUD of client")
+
 public class ClientController {
 
     @Autowired private ClientService service;
@@ -49,8 +52,8 @@ public class ClientController {
                 if (data.getSurname() != null) {
                     client.setSurname(data.getSurname());
                 }
-                if (data.getDocnumber() != null) {
-                    client.setDocnumber(data.getDocnumber());
+                if (data.getDocNumber() != null) {
+                    client.setDocNumber(data.getDocNumber());
                 }
                 if (data.getCarts() != null) {
                     client.setCarts(data.getCarts());

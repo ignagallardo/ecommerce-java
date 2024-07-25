@@ -23,12 +23,12 @@ public class CartService {
     private ProductRepository productRepository;
 
 
-    public Cart addProduct(Integer clientId, Integer productId, Integer num) {
-        Optional<Client> client = clientRepository.findById(clientId);
+    public Cart addProduct(Integer client_id, Integer productId, Integer num) {
+        Optional<Client> client = clientRepository.findById(client_id);
         Optional<Product> product = productRepository.findById(productId);
         if (client.isPresent() & product.isPresent()) {
             Cart cart = new Cart();
-            cart.setClient_id(client.get());
+            cart.setClient(client.get());
             cart.setProduct_id(product.get());
             cart.setPrice(product.get().getPrice());
             cart.setAmount(num);
@@ -49,8 +49,8 @@ public class CartService {
         }
     }
 
-    public List<Cart> findByClientIdAndDelivered (Integer clientId) {
-        List<Cart> carts = repository.findByClientIdAndDelivered(clientId, false);
+    public List<Cart> findByClientIdAndDelivered (Integer client_id) {
+        List<Cart> carts = repository.findByClientIdAndDelivered(client_id, false);
         if(carts.isEmpty()) {
             throw new RuntimeException("Cart not found");
         } else {

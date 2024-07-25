@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
-    List<Cart> findByClientIdAndDelivered(int clientId, Boolean delivered);
+    List<Cart> findByClientIdAndDelivered(Integer client, Boolean delivered);
 }
