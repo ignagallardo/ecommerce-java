@@ -25,11 +25,4 @@ public class ProductService {
         return repository.findById(id);
     }
 
-    public Optional<Product> destroyOne(Integer id) {
-        Optional<Product> product = repository.findById(id);
-        if(product.isPresent()){
-            repository.deleteById(id);
-        }
-        return product;
-    }
 }

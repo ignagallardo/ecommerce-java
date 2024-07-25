@@ -1,8 +1,9 @@
 package com.ecommerce.controllers;
 
-import com.ecommerce.entities.Cart;
 import com.ecommerce.entities.Client;
 import com.ecommerce.services.ClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,10 @@ public class ClientController {
     @Autowired private ClientService service;
 
     @PostMapping
+    @Operation(summary = "Register a client", description = "Registers a new client")
+    @ApiResponse(responseCode = "200", description = "Client registered successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "500", description = "Internal serve error")
     public ResponseEntity<Client> create(@RequestBody Client client) {
         try {
             Client newClient= service.save(client);
@@ -28,6 +33,11 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a client profile", description = "Updates the profile of an specified client")
+    @ApiResponse(responseCode = "200", description = "Client profile updated successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "404", description = "Client not found")
+    @ApiResponse(responseCode = "500", description = "Internal serve error")
     public ResponseEntity<Client> update(@PathVariable Integer id, @RequestBody Client data) {
         try {
             Optional<Client> optionalClient = service.readOne(id);

@@ -1,8 +1,11 @@
 package com.ecommerce.controllers;
 
 import com.ecommerce.entities.Cart;
+import com.ecommerce.entities.Client;
 import com.ecommerce.entities.Product;
 import com.ecommerce.services.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,10 @@ public class ProductController {
     @Autowired private ProductService service;
 
     @PostMapping
+    @Operation(summary = "Create a product", description = "Creates a product")
+    @ApiResponse(responseCode = "200", description = "Product created successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "500", description = "Internal serve error")
     public ResponseEntity<Product> create(@RequestBody Product product) {
         try {
             Product newProduct = service.save(product);
@@ -29,6 +36,10 @@ public class ProductController {
     }
 
     @GetMapping
+    @Operation(summary = "Read all products", description = "Reads all the products")
+    @ApiResponse(responseCode = "200", description = "Products read successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "500", description = "Internal serve error")
     public ResponseEntity<List<Product>> readAll() {
         try {
             List<Product> products = service.readAll();
@@ -40,7 +51,12 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> read(@PathVariable Integer id) {
+    @Operation(summary = "Read a product", description = "Reads an specified product")
+    @ApiResponse(responseCode = "200", description = "Product read successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "404", description = "Product not found")
+    @ApiResponse(responseCode = "500", description = "Internal serve error")
+    public ResponseEntity<Product> readOne(@PathVariable Integer id) {
         try {
             Optional<Product> product = service.readOne(id);
             if (product.isPresent()) {
@@ -54,7 +70,12 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/")
+    @Operation(summary = "Update a product", description = "Updates the information of an specified product")
+    @ApiResponse(responseCode = "200", description = "Product updated successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "404", description = "Product not found")
+    @ApiResponse(responseCode = "500", description = "Internal serve error")
     public ResponseEntity<Product> update(@PathVariable Integer id, @RequestBody Product data) {
         try {
             Optional<Product> optionalProduct = service.readOne(id);
@@ -66,11 +87,8 @@ public class ProductController {
                 if (data.getDescription() != null) {
                     product.setDescription(data.getDescription());
                 }
-                if(data.getStock() != null) {
+                if (data.getStock() != null) {
                     product.setStock(data.getStock());
-                }
-                if(data.getPrice() != 0) {
-                    product.setPrice(data.getPrice());
                 }
                 if (data.getCarts() != null) {
                     product.setCarts(data.getCarts());

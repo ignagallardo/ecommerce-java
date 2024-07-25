@@ -16,6 +16,7 @@ public class Cart {
 
     @Getter @Setter private Double price;
     @Getter @Setter private Integer amount;
+    @Getter @Setter private boolean delivered;
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
@@ -24,6 +25,5 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @Getter @Setter private Product product_id;
-
 
 }

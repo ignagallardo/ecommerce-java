@@ -22,72 +22,39 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Cart save(Cart cart) {
-        return repository.save(cart);
+
+    public Cart addProduct(Integer clientId, Integer productId, Integer num) {
+        Optional<Client> client = clientRepository.findById(clientId);
+        Optional<Product> product = productRepository.findById(productId);
+        if (client.isPresent() & product.isPresent()) {
+            Cart cart = new Cart();
+            cart.setClient_id(client.get());
+            cart.setProduct_id(product.get());
+            cart.setPrice(product.get().getPrice());
+            cart.setAmount(num);
+            cart.setDelivered(false);
+            return repository.save(cart);
+        } else {
+            throw new RuntimeException("Client or Product not found");
+        }
     }
 
-    public List<Cart> readAll() {
-        return repository.findAll();
-    }
-
-    public Optional<Cart> readOne(Integer id) {
-        return repository.findById(id);
-    }
-
-    public Optional<Cart> destroyOne(Integer id) {
-        Optional<Cart> cart = repository.findById(id);
+    public Cart deleteOne(Integer cartId) {
+        Optional<Cart> cart = repository.findById(cartId);
         if (cart.isPresent()) {
-            repository.deleteById(id);
+            repository.deleteById(cartId);
+            return cart.get();
+        } else {
+            throw new RuntimeException("Cart not found");
         }
-        return cart;
     }
 
-    public Optional<Cart> addProduct(Integer cartId, Integer clientId, Integer productId, Integer num) {
-        Optional<Cart> cart = repository.findById(cartId);
-        Optional<Client> client = clientRepository.findById(clientId);
-        Optional<Product> product = productRepository.findById(productId);
-        if (cart.isEmpty() || client.isEmpty() || product.isEmpty()) {
-            return cart;
+    public List<Cart> findByClientIdAndDelivered (Integer clientId) {
+        List<Cart> carts = repository.findByClientIdAndDelivered(clientId, false);
+        if(carts.isEmpty()) {
+            throw new RuntimeException("Cart not found");
+        } else {
+            return carts;
         }
-        Cart foundCart = cart.get();
-        Client foundClient = client.get();
-        Product foundProduct = product.get();
-        foundCart.setClient_id(foundClient);
-        repository.save(foundCart);
-        for (int i = 1; i <= num; i++) {
-            foundCart.setProduct_id(foundProduct);
-            repository.save(foundCart);
-        }
-        return cart;
-    }
-
-    public Optional<Cart> deleteOne(Integer cartId, Integer clientId, Integer productId, Integer num) {
-        Optional<Cart> cart = repository.findById(cartId);
-        Optional<Client> client = clientRepository.findById(clientId);
-        Optional<Product> product = productRepository.findById(productId);
-        if (cart.isEmpty() || client.isEmpty() || product.isEmpty()) {
-            return cart;
-        }
-
-        Cart foundCart = cart.get();
-        Client foundClient = client.get();
-        Product foundProduct = product.get();
-        // me aseguro de que el carrito pertenece al cliente correcto
-        if (!foundCart.getClient_id().equals(foundClient)) {
-            return cart;
-        }
-        // me aseguro de que el producto está en el carrito
-        if (!foundCart.getProduct_id().equals(foundProduct)) {
-            return cart;
-        }
-        for (int i = 1; i <= num; i++) {
-            if (product.isPresent()) {
-                productRepository.deleteById(productId);
-            }
-        }
-        // guardo el carrito actualizado
-        repository.save(foundCart);
-
-        return cart;
     }
 }

@@ -17,7 +17,7 @@ public class ClientService {
         return repository.save(client);
     }
 
-    public Optional<Client> readOne(Integer id) {
+    public Optional<Client> readOne (Integer id) {
         return repository.findById(id);
     }
 }
